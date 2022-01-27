@@ -7,7 +7,10 @@ module.exports = {
     findAll: (req, res) => {
         Author.find()
             .then(authors => res.json({ authors: authors }))
-            .catch(err => res.json({ message: "something wrong", error: err }))
+            .catch(err => {
+                console.log(err)
+                res.json({ message: "something wrong", error: err })
+            })
     }, // at this point create route to do the testing
 
 
@@ -15,7 +18,10 @@ module.exports = {
     create: (req, res) => {
         Author.create(req.body)
             .then(author => res.json({ author: author }))
-            .catch(err => res.json({ message: "something wrong", error: err }))
+            .catch(err => {
+                console.log(err)
+                res.status(400).json({ message: "something wrong", error: err })
+            })
     },
 
 
@@ -23,15 +29,23 @@ module.exports = {
     findOne: (req, res) => {
         Author.findById(req.params.id)
             .then(author => res.json({ author: author }))
-            .catch(err => res.json({ message: "something wrong", error: err }))
+            .catch(err => {
+                res.status(400).json({ message: "something wrong", error: err })
+            })
     },
 
 
     // -------------- UPDATE ONE ---------------
     update: (req, res) => {
         Author.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
-            .then(author => res.json({ author: author }))
-            .catch(err => res.json({ message: "something wrong", error: err }))
+            .then(author => {
+                res.json({ author: author })
+        })
+            .catch(err => {
+                console.log(err)
+                res.status(400).json({ message: "something wrong", error: err })
+            })
+
     },
 
 
@@ -39,7 +53,10 @@ module.exports = {
     delete: (req, res) => {
         Author.findByIdAndDelete(req.params.id)
             .then(author => res.json({ deletedAuthor: author }))
-            .catch(err => res.json({ message: "something wrong", error: err }))
+            .catch(err => {
+                console.log(err)
+                res.json({ message: "something wrong", error: err })
+            })
     }
 }
 
